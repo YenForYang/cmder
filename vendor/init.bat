@@ -4,7 +4,7 @@
 :: Created as part of cmder project
 
 :: !!! THIS FILE IS OVERWRITTEN WHEN CMDER IS UPDATED
-:: !!! Use "%CMDER_ROOT%\config\user-profile.cmd" to add your own startup commands
+:: !!! Use "%CMDER_ROOT%\config\user_profile.cmd" to add your own startup commands
 
 :: Use /v command line arg or set to > 0 for verbose output to aid in debugging.
 set verbose-output=0
@@ -203,9 +203,12 @@ if defined GIT_INSTALL_ROOT (
 
     :: define SVN_SSH so we can use git svn with ssh svn repositories
     if not defined SVN_SSH set "SVN_SSH=%GIT_INSTALL_ROOT:\=\\%\\bin\\ssh.exe"
+    for /F "delims=" %%F in ('env /usr/bin/locale -uU 2^>nul') do (
+        set "LANG=%%F"
+    )
 )
 
-endlocal & set "PATH=%PATH%" & set "SVN_SSH=%SVN_SSH%" & set "GIT_INSTALL_ROOT=%GIT_INSTALL_ROOT%"
+endlocal & set "PATH=%PATH%" & set "LANG=%LANG%" & set "SVN_SSH=%SVN_SSH%" & set "GIT_INSTALL_ROOT=%GIT_INSTALL_ROOT%"
 %lib_console% debug-output init.bat "Env Var - GIT_INSTALL_ROOT=%GIT_INSTALL_ROOT%"
 %lib_console% debug-output init.bat "Found Git in: '%GIT_INSTALL_ROOT%'"
 goto :PATH_ENHANCE
@@ -294,17 +297,17 @@ if exist "%GIT_INSTALL_ROOT%\post-install.bat" (
 if not defined HOME set "HOME=%USERPROFILE%"
 %lib_console% debug-output init.bat "Env Var - HOME=%HOME%"
 
-set "initialConfig=%CMDER_ROOT%\config\user-profile.cmd"
-if exist "%CMDER_ROOT%\config\user-profile.cmd" (
+set "initialConfig=%CMDER_ROOT%\config\user_profile.cmd"
+if exist "%CMDER_ROOT%\config\user_profile.cmd" (
     REM Create this file and place your own command in there
-    call "%CMDER_ROOT%\config\user-profile.cmd"
+    call "%CMDER_ROOT%\config\user_profile.cmd"
 )
 
 if defined CMDER_USER_CONFIG (
-  set "initialConfig=%CMDER_USER_CONFIG%\user-profile.cmd"
-  if exist "%CMDER_USER_CONFIG%\user-profile.cmd" (
+  set "initialConfig=%CMDER_USER_CONFIG%\user_profile.cmd"
+  if exist "%CMDER_USER_CONFIG%\user_profile.cmd" (
       REM Create this file and place your own command in there
-      call "%CMDER_USER_CONFIG%\user-profile.cmd"
+      call "%CMDER_USER_CONFIG%\user_profile.cmd"
   )
 )
 
